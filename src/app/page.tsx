@@ -36,6 +36,7 @@ export default function Home() {
       title: "Configurateur Celio",
       category: "Application Web 3D",
       image: "/celioMeuble.jpeg",
+      image2: "/configurateur.png",
       description: "Développement d'un configurateur 3D pour Meubles Celio permettant aux clients de personnaliser leur mobilier (dressings, lits escamotables) en temps réel sur le site e-commerce. Création d'un backoffice complet pour la gestion des données du configurateur.",
       sections: [
         {
@@ -51,10 +52,10 @@ export default function Home() {
           • Sauvegarde des configurations
           • Export des devis et plans techniques
           • Adaptation responsive`,
-          video: "/demo-configurateur.mp4",
+          video: "/Celio.mp4",
           images: [
-            "/celio-interface-2.jpg",
-            "/celio-mobile-3.jpg"
+            "/celioMeuble.jpeg",
+            "/celioMeuble.jpeg"
           ],
           technologies: ["Unity", "C#", "WebGL"]
         },
@@ -71,9 +72,9 @@ export default function Home() {
           • Interface de gestion des prix et options
           • Mise à jour du contenu sans intervention technique`,
           images: [
-            "/backoffice-1.jpg",
-            "/backoffice-2.jpg",
-            "/database-schema.jpg"
+            "/celioMeuble.jpeg",
+            "/celioMeuble.jpeg",
+            "/celioMeuble.jpeg"
           ],
           technologies: ["PHP", "SQL", "HTML/CSS"]
         }
@@ -86,6 +87,7 @@ export default function Home() {
       title: "En cours de développement...",
       category: "",
       image: "/soussol.jpg",
+      image2: "/sand.jpg",
       description: "En cours de développement.",
       sections: [],
       technologies: [],
@@ -311,10 +313,20 @@ export default function Home() {
         initial={{ x: "100%" }}
         animate={{ x: selectedId ? 0 : "100%" }}
         transition={{ duration: 0.5 }}
-        className="fixed top-0 left-0 w-full h-full bg-[#010003] overflow-y-auto"
+        className="fixed top-0 left-0 w-full h-full overflow-y-auto"
       >
+        <div className="absolute w-full min-h-[386vh]">
+          <Image
+            src="/background.jpg"
+            alt="Background"
+            fill
+            className="object-cover opacity-60 sticky top-0"
+            sizes="100vw"
+            priority
+          />
+        </div>
         {selectedId && (
-          <div className="p-8">
+          <div className="p-8 relative bg-[#010003]/20">
             <motion.button
               onClick={() => setSelectedId(null)}
               className="fixed top-8 left-8 text-[#E4F5E5] hover:text-white transition-colors"
@@ -335,7 +347,7 @@ export default function Home() {
                   >
                     <div className="relative aspect-video mb-8">
                       <Image
-                        src={project.image}
+                        src={project.image2}
                         alt={project.title}
                         fill
                         className="object-cover rounded-lg"
@@ -369,7 +381,7 @@ export default function Home() {
                     </div>
 
                     {/* Galerie d'images */}
-                    <div className="grid grid-cols-2 gap-4 mt-8">
+                    <div className="grid grid-cols-1 gap-4 mt-8">
                       {project.sections.map((section, index) => (
                         <div key={index} className="mb-24">
                           <h3 className="text-4xl font-['Area_Normal_Bold'] mb-4">{section.title}</h3>
@@ -394,8 +406,13 @@ export default function Home() {
                             <div className="mb-12">
                               <div className="relative aspect-video w-full max-w-4xl mx-auto rounded-lg overflow-hidden">
                                 <video
+                                  autoPlay
+                                  loop
+                                  muted
+                                  playsInline
                                   controls
-                                  className="absolute inset-0 w-full h-full object-cover"
+                                  controlsList="nodownload"
+                                  className="w-full h-full object-cover"
                                   poster="/video-poster.jpg"
                                 >
                                   <source src={section.video} type="video/mp4" />
