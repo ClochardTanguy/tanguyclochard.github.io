@@ -33,17 +33,64 @@ export default function Home() {
   const projects = [
     {
       id: 1,
-      title: "Projet 1",
-      category: "Configurateur de meubles",
+      title: "Configurateur Celio",
+      category: "Application Web 3D",
       image: "/celioMeuble.jpeg",
-      description: "Chez meubles celio, création d'un configurateur de meubles. Accessible au grand public depuis le site internet des meubles celio.",
-    },
-    {
+      description: "Développement d'un configurateur 3D pour Meubles Celio permettant aux clients de personnaliser leur mobilier (dressings, lits escamotables) en temps réel sur le site e-commerce. Création d'un backoffice complet pour la gestion des données du configurateur.",
+      sections: [
+        {
+          title: "Configurateur 3D",
+          subtitle: "Développé avec Unity et C#",
+          description: `Interface client permettant la personnalisation et visualisation en temps réel des meubles :
+
+          • Personnalisation des dimensions et configurations
+          • Choix des matériaux et finitions
+          • Visualisation 3D interactive et réaliste
+          • Interface intuitive de design
+          • Calcul automatique des contraintes techniques
+          • Sauvegarde des configurations
+          • Export des devis et plans techniques
+          • Adaptation responsive`,
+          video: "/demo-configurateur.mp4",
+          images: [
+            "/celio-interface-2.jpg",
+            "/celio-mobile-3.jpg"
+          ],
+          technologies: ["Unity", "C#", "WebGL"]
+        },
+        {
+          title: "Backoffice Administratif",
+          subtitle: "Développé avec PHP et SQL",
+          description: `Interface d'administration complète pour la gestion du configurateur :
+
+          • Conception et développement de la base de données
+          • Interface d'administration pour la gestion des collections
+          • Ajout et modification des dimensions disponibles
+          • Gestion des matériaux et finitions
+          • Configuration des contraintes techniques
+          • Interface de gestion des prix et options
+          • Mise à jour du contenu sans intervention technique`,
+          images: [
+            "/backoffice-1.jpg",
+            "/backoffice-2.jpg",
+            "/database-schema.jpg"
+          ],
+          technologies: ["PHP", "SQL", "HTML/CSS"]
+        }
+      ],
+      technologies: ["Unity", "C#", "SQL", "PHP"],
+      role: "Développeur",
+      duree: "8 mois"
+    }, {
       id: 2,
-      title: "Projet 2",
-      category: "Configurateur de meubles",
-      image: "/celioMeuble.jpeg",
-      description: "Chez meubles celio, création d'un configurateur de meubles. Accessible au grand public depuis le site internet des meubles celio.",
+      title: "En cours de développement...",
+      category: "",
+      image: "/soussol.jpg",
+      description: "En cours de développement.",
+      sections: [],
+      technologies: [],
+      role: "",
+      duree: ""
     }
   ];
 
@@ -126,23 +173,27 @@ export default function Home() {
               }}
               className="absolute top-40 left-1/2 -translate-x-1/2 cursor-pointer z-50"
               onClick={() => {
-                const scroll = new LocomotiveScroll({
-                  el: document.querySelector('[data-scroll-container]') as HTMLElement,
-                  smooth: true,
-                  multiplier: 0.5,
-                  lerp: 0.05
-                });
+                const projectsSection = document.querySelector('#projects-section');
+                if (projectsSection) {
+                  const scroll = new LocomotiveScroll({
+                    el: document.querySelector('[data-scroll-container]') as HTMLElement,
+                    smooth: true,
+                    multiplier: 0.8
+                  });
 
-                scroll.scrollTo('#projects-section', {
-                  duration: 1.5,
-                  offset: 0,
-                  easing: [0.25, 0.00, 0.35, 1.00] // Courbe d'animation douce
-                });
+                  const targetElement = document.querySelector('#projects-section') as HTMLElement;
+                  scroll.scrollTo(targetElement, {
+                    offset: -100,
+                    duration: 1500,
+                    easing: [0.25, 0.00, 0.35, 1.00],
+                    disableLerp: false
+                  });
 
-                // Nettoyage après l'animation
-                setTimeout(() => {
-                  scroll.destroy();
-                }, 2000);
+                  // Nettoyage de l'instance après l'animation
+                  setTimeout(() => {
+                    scroll.destroy();
+                  }, 2000);
+                }
               }}
             >
               <span className="hover:text-white transition-colors duration-300 cursor-pointer">
@@ -290,9 +341,88 @@ export default function Home() {
                         className="object-cover rounded-lg"
                       />
                     </div>
-                    <h2 className="text-4xl font-bold mb-4">{project.title}</h2>
+                    <h2 className="text-4xl font-['Area_Normal_Bold'] mb-4">{project.title}</h2>
                     <p className="text-xl text-[#E4F5E5]/80 mb-4">{project.category}</p>
-                    <p className="text-lg leading-relaxed">{project.description}</p>
+
+                    {/* Technologies utilisées */}
+                    <div className="flex gap-2 mb-6">
+                      {project.technologies.map((tech, index) => (
+                        <span key={index} className="px-3 py-1 bg-[#E4F5E5]/10 rounded-full text-sm">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Description détaillée */}
+                    <div className="space-y-6 mb-8">
+                      <p className="text-lg leading-relaxed whitespace-pre-line">
+                        {project.description}
+                      </p>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="text-[#E4F5E5]/80">
+                          <span className="font-['Area_Normal_Bold']">Rôle:</span> {project.role}
+                        </div>
+                        <div className="text-[#E4F5E5]/80">
+                          <span className="font-['Area_Normal_Bold']">Durée:</span> {project.duree}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Galerie d'images */}
+                    <div className="grid grid-cols-2 gap-4 mt-8">
+                      {project.sections.map((section, index) => (
+                        <div key={index} className="mb-24">
+                          <h3 className="text-4xl font-['Area_Normal_Bold'] mb-4">{section.title}</h3>
+                          <h4 className="text-2xl text-[#E4F5E5]/80 mb-8">{section.subtitle}</h4>
+
+                          {/* Technologies de la section */}
+                          <div className="flex gap-3 mb-8">
+                            {section.technologies.map((tech, techIndex) => (
+                              <span key={techIndex} className="px-4 py-2 bg-[#E4F5E5]/10 rounded-full text-sm">
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+
+                          {/* Description */}
+                          <p className="text-lg leading-relaxed whitespace-pre-line mb-12 max-w-3xl">
+                            {section.description}
+                          </p>
+
+                          {/* Vidéo pour la section Configurateur 3D */}
+                          {section.video && (
+                            <div className="mb-12">
+                              <div className="relative aspect-video w-full max-w-4xl mx-auto rounded-lg overflow-hidden">
+                                <video
+                                  controls
+                                  className="absolute inset-0 w-full h-full object-cover"
+                                  poster="/video-poster.jpg"
+                                >
+                                  <source src={section.video} type="video/mp4" />
+                                  Votre navigateur ne supporte pas la lecture vidéo.
+                                </video>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Images de la section */}
+                          {section.images && section.images.length > 0 && (
+                            <div className="grid grid-cols-2 gap-8 max-w-4xl mx-auto">
+                              {section.images.map((img, imgIndex) => (
+                                <div key={imgIndex} className="relative aspect-video">
+                                  <Image
+                                    src={img}
+                                    alt={`${section.title} - Vue ${imgIndex + 1}`}
+                                    fill
+                                    className="object-cover rounded-lg"
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   </motion.div>
                 );
               }

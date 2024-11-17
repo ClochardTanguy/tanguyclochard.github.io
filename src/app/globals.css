@@ -34,6 +34,18 @@ html {
   scroll-behavior: smooth;
 }
 
+::selection {
+  background-color: rgba(255, 126, 50, 0.35);
+  /* Orange semi-transparent */
+  color: #ffffff;
+}
+
+::-moz-selection {
+  background-color: rgba(255, 125, 50, 0.35);
+  /* Pour Firefox */
+  color: #ffffff;
+}
+
 /* Cacher la barre de défilement tout en gardant la fonctionnalité */
 ::-webkit-scrollbar {
   display: none;
