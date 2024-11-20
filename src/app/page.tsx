@@ -19,6 +19,10 @@ type Project = {
     video?: string;
     images: string[];
     technologies: string[];
+    features?: {
+      title: string;
+      description: string;
+    }[];
   }[];
   technologies: string[];
   role: string;
@@ -29,6 +33,7 @@ export default function Home() {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
   const [showDetails, setShowDetails] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -45,6 +50,10 @@ export default function Home() {
         lerp: 0.05,
         reloadOnContextChange: true
       });
+
+      setTimeout(() => {
+        setPageLoading(false);
+      }, 2000);
 
       return () => {
         scroll.destroy();
@@ -63,14 +72,37 @@ export default function Home() {
         {
           title: "Configurateur 3D",
           subtitle: "Développé avec Unity et C#",
-          description: `Interface client permettant la personnalisation et visualisation en temps réel des meubles :
-
-          • Choix des dimensions et options de configuration
-          • Choix des façades
-          • Visualisation 3D interactive et réaliste
-          • Interface intuitive
-          • Sauvegarde des configurations
-          • Export des devis`,
+          description: `Création d'un configurateur 3D permettant la personnalisation et visualisation en temps réel des meubles.`,
+          features: [
+            {
+              title: "Choix des dimensions et options de configuration",
+              description: "Personnalisation des dimensions, hauteur, largeur, profondeur, portes, coloris du meuble."
+            },
+            {
+              title: "Choix des façades",
+              description: "Sélection parmi les coloris disponibles pour personnaliser l'aspect visuel du meuble en temps réel."
+            },
+            {
+              title: "Choix des modules intérieurs",
+              description: "Sélection d'un module intérieur pour chaque partie d'un meuble, afin de personnaliser le rangement intérieur."
+            },
+            {
+              title: "Visualisation 3D interactive et réaliste",
+              description: "Affichage d'un meuble en 3D permettant d'afficher le meuble avec un éclairage dynamique et de le visualiser en temps réel."
+            },
+            {
+              title: "Interface intuitive",
+              description: "Mise en place de l'interface du configurateur avec une navigation fluide et ergonomique pour une utilisation optimale."
+            },
+            {
+              title: "Sauvegarde des configurations",
+              description: "Création d'un système de sauvegarde des configurations pour reprendre le projet ou le rouvrir dans un magasin partenaire."
+            },
+            {
+              title: "Export des devis",
+              description: "Création d'un devis en HTML/CSS avec des données dynamiques affichant un récapitulatif du projet."
+            }
+          ],
           video: "/Celio.mp4",
           images: [
           ],
@@ -79,13 +111,25 @@ export default function Home() {
         {
           title: "Backoffice Administratif",
           subtitle: "Développé avec PHP, SQL, JavaScript et HTML/CSS",
-          description: `Interface d'administration complète pour la gestion du configurateur :
-
-          • Conception et gestion de la base de données
-          • Interface d'administration pour la gestion des tables de dimensions, façades, matériaux, options, etc.
-          • Ajout et modification des dimensions disponibles
-          • Mise à jour du contenu sans intervention technique
-          • Visualisation des statistiques d'utilisation du configurateur`,
+          description: "Interface d'administration complète pour la gestion du configurateur.",
+          features: [
+            {
+              title: "Conception et gestion de la base de données",
+              description: "Réflexion et création de la base de données relationnelle."
+            },
+            {
+              title: "Interface d'administration pour la gestion des tables",
+              description: "Tableau de bord complet permettant de gérer l'ensemble des paramètres : dimensions, façades, matériaux, options, ect."
+            },
+            {
+              title: "Mise à jour du contenu sans intervention technique",
+              description: "Interface utilisateur permettant aux équipes marketing et commerciales de mettre à jour le contenu et les prix de manière autonome."
+            },
+            {
+              title: "Visualisation des statistiques d'utilisation",
+              description: "Tableaux de bord analytiques permettant de visualiser les statistiques d'utilisation du configurateur pour chaque \"log\" du configurateur, et créer un schéma de données sur les logs sélectionnés."
+            }
+          ],
           images: [
             "/celioMeuble.jpeg",
             "/celioMeuble.jpeg",
@@ -111,6 +155,63 @@ export default function Home() {
       className="min-h-screen bg-[#010003] text-[#E4F5E5] w-full overflow-x-hidden font-['Area_Normal_ExtraBold']"
       style={{ height: '100vh' }}
     >
+      {pageLoading && (
+        <motion.div
+          className="fixed inset-0 z-50 bg-[#010003] flex flex-col items-center justify-center"
+          animate={{ opacity: [1, 1, 0] }}
+          transition={{ duration: 2.5, times: [0, 0.8, 1] }}
+        >
+          <motion.div
+            className="relative w-40 h-40 mb-12"
+            animate={{
+              rotate: 360,
+              scale: [1, 1.2, 1]
+            }}
+            transition={{
+              rotate: { duration: 2, repeat: Infinity, ease: "linear" },
+              scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+            }}
+          >
+            <svg className="w-full h-full" viewBox="0 0 100 100">
+              <defs>
+                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#E4F5E5" stopOpacity="1" />
+                  <stop offset="100%" stopColor="#E4F5E5" stopOpacity="0.2" />
+                </linearGradient>
+              </defs>
+              <circle
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
+                stroke="url(#gradient)"
+                strokeWidth="2"
+                strokeDasharray="283"
+                strokeDashoffset="100"
+                className="animate-dash"
+              />
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 1, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="text-[#E4F5E5] text-4xl font-['Area_Normal_Bold']"
+              >
+                T.C.
+              </motion.span>
+            </div>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="text-[#E4F5E5] text-base font-['Area_Normal_Regular']"
+          >
+            Bienvenue sur mon portfolio
+          </motion.div>
+        </motion.div>
+      )}
       <motion.div
         animate={{ x: selectedId ? "-100%" : 0 }}
         transition={{ duration: 0.5 }}
@@ -392,9 +493,9 @@ export default function Home() {
                             <motion.div
                               animate={{ rotate: showDetails ? 180 : 0 }}
                               transition={{ duration: 0.3 }}
-                              className="mt-4"
+                              className="mt-2"
                             >
-                              <FaChevronDown size={24} color="currentColor" />
+                              <FaChevronDown color="currentColor" />
                             </motion.div>
                           </div>
                         </div>
@@ -431,9 +532,33 @@ export default function Home() {
                                 </div>
 
                                 {/* Description */}
-                                <p className="text-lg leading-relaxed whitespace-pre-line mb-12 max-w-3xl">
+                                <p className="text-lg leading-relaxed mb-12">
                                   {section.description}
                                 </p>
+                                <div className="space-y-8 mb-16 pl-8">
+                                  {section.features?.map((feature, idx) => (
+                                    <motion.div
+                                      key={idx}
+                                      initial={{ opacity: 0, x: -20 }}
+                                      whileInView={{ opacity: 1, x: 0 }}
+                                      transition={{ delay: idx * 0.1 }}
+                                      className="group"
+                                    >
+                                      <div className="flex items-center mb-2">
+                                        <div className="flex-shrink-0 mr-4">
+                                          <div className="w-1 h-8 bg-gradient-to-b from-[#E4F5E5]/60 to-transparent rounded-full 
+                                                            group-hover:h-12 transition-all duration-300" />
+                                        </div>
+                                        <span className="text-[#E4F5E5] feature-title text-lg group-hover:text-[#E4F5E5] transition-colors duration-300">
+                                          {feature.title}
+                                        </span>
+                                      </div>
+                                      <div className="ml-8 text-[#E4F5E5]/70 text-sm">
+                                        {feature.description}
+                                      </div>
+                                    </motion.div>
+                                  ))}
+                                </div>
 
                                 {/* Vidéo pour la section Configurateur 3D */}
                                 {section.video && (
@@ -447,7 +572,6 @@ export default function Home() {
                                         controls
                                         controlsList="nodownload"
                                         className="w-full h-full object-cover"
-                                        poster="/video-poster.jpg"
                                       >
                                         <source src={section.video} type="video/mp4" />
                                         Votre navigateur ne supporte pas la lecture vidéo.

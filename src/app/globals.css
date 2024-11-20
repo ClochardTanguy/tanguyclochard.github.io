@@ -4,12 +4,19 @@
 
 @font-face {
   font-family: 'Area_Normal_ExtraBold';
-  src: url('/fonts/fonnts.com-Area_Normal_ExtraBold.otf') format('opentype');
+  src: url('/fonts/Area_Normal_ExtraBold.otf') format('opentype');
 }
 
 @font-face {
   font-family: 'Area_Normal_Regular';
-  src: url('/fonts/fonnts.com-Area_Normal_Regular.otf') format('opentype');
+  src: url('/fonts/Area_Normal_Regular.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Area_Normal_Bold';
+  src: url('/fonts/Area_Normal_Bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
 }
 
 :root {
@@ -56,4 +63,27 @@ html {
   /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
+}
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 283;
+  }
+
+  50% {
+    stroke-dashoffset: 0;
+  }
+
+  100% {
+    stroke-dashoffset: -283;
+  }
+}
+
+.animate-dash {
+  animation: dash 2s ease-in-out infinite;
+}
+
+.feature-title {
+  font-family: 'Area_Normal_Bold', sans-serif;
+  letter-spacing: -0.02em;
 }
