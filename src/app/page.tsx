@@ -40,6 +40,7 @@ export default function Home() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [showArrow, setShowArrow] = useState(true);
 
   const initLocomotiveScroll = async () => {
     if (typeof window !== 'undefined') {
@@ -92,6 +93,19 @@ export default function Home() {
         console.log("Erreur de lecture vidéo:", error);
       });
     }
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const soussolImage = document.querySelector('img[src="/soussol.jpg"]');
+      if (soussolImage) {
+        const rect = soussolImage.getBoundingClientRect();
+        setShowArrow(rect.top > window.innerHeight || rect.bottom < 0);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const projects: Project[] = [
@@ -192,20 +206,76 @@ export default function Home() {
     }
   };
 
+  const playVideo = async () => {
+    try {
+      if (videoRef.current) {
+        await videoRef.current.play();
+        setIsPlaying(true);
+      }
+    } catch (error) {
+      console.log("Erreur de lecture vidéo:", error);
+    }
+  };
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        playVideo();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    playVideo(); // Tentative de lecture initiale
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
   return (
     <main className="relative">
       {!pageLoading && (
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="fixed top-0 left-0 w-full h-full object-cover z-[-1]"
-          onLoadedData={() => setVideoLoaded(true)}
-        >
-          <source src="/video.mp4" type="video/mp4" />
-        </video>
+        <>
+          <video
+            ref={videoRef}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            className="fixed top-0 left-0 w-full h-full object-cover z-[-1]"
+            onLoadedData={() => {
+              setVideoLoaded(true);
+              if (videoRef.current) {
+                videoRef.current.play().catch(error => {
+                  console.log("Erreur de lecture vidéo:", error);
+                });
+              }
+            }}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+            }}
+          >
+            <source src="/video.mp4" type="video/mp4" />
+            Votre navigateur ne supporte pas la lecture vidéo.
+          </video>
+
+          <div className="fixed top-0 left-0 w-full h-full z-[-2] block md:hidden">
+            <Image
+              src="/fond.jpg"
+              alt="Background mobile"
+              fill
+              style={{ objectFit: 'cover' }}
+              priority
+              sizes="100vw"
+            />
+          </div>
+        </>
       )}
 
       <div className="fixed top-0 left-0 w-full h-full bg-black/30 z-[-1]" />
@@ -261,7 +331,11 @@ export default function Home() {
           className="overflow-y-auto h-full"
         >
           {/* Sections de contenu d'abord */}
-          <section data-scroll data-scroll-speed="0.3" className="min-h-[210vh] flex items-start justify-center relative p-4">
+          <section
+            data-scroll
+            data-scroll-speed="0.3"
+            className="min-h-screen md:min-h-[210vh] flex items-start justify-center relative p-4"
+          >
             <div
               data-scroll
               data-scroll-speed="-2"
@@ -302,7 +376,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.5 }}
                 transition={{ duration: 1, delay: 2 }}
-                className="text-9xl font-['Area_Normal_ExtraBold'] tracking-tighter text-[#E4F5E5]"
+                className="text-4xl md:text-9xl font-['Area_Normal_ExtraBold'] tracking-tighter text-[#E4F5E5]"
               >
                 Tanguy Clochard
               </motion.h1>
@@ -314,7 +388,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 1, delay: 2.5 }}
-                className="text-xl font-['Area_Normal_ExtraBold'] text-[#E4F5E5] max-w-2xl mx-auto text-center"
+                className="text-base md:text-xl font-['Area_Normal_ExtraBold'] text-[#E4F5E5] max-w-2xl mx-auto text-center px-4"
               >
                 Concepteur développeur d'applications
               </motion.p>
@@ -324,11 +398,15 @@ export default function Home() {
               >
                 <motion.div
                   initial={{ opacity: 0, scale: 2, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 40 }}
+                  animate={{
+                    opacity: showArrow ? 1 : 0,
+                    scale: 1,
+                    y: 40
+                  }}
                   transition={{
-                    opacity: { duration: 0.5, delay: 3 },    // Apparition plus tardive
-                    scale: { duration: 0.8, delay: 3 },      // Animation de l'échelle
-                    y: {                                     // Animation du mouvement vertical
+                    opacity: { duration: 0.3 },
+                    scale: { duration: 0.8, delay: 3 },
+                    y: {
                       duration: 1.5,
                       delay: 3,
                       repeat: Infinity,
@@ -459,11 +537,11 @@ export default function Home() {
               <div className="absolute inset-0 w-full h-full">
                 <div className="absolute inset-0 bg-[#010003]/80" />
                 <Image
-                  src="/background.jpg"
+                  src="/sand.jfif"
                   alt="Background"
                   fill
                   sizes="100vw"
-                  className="object-cover opacity-30 blur-sm"
+                  className="object-cover opacity-30 scale-150 blur-lg"
                   priority
                 />
               </div>

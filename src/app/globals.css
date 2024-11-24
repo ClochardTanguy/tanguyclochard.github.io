@@ -163,3 +163,25 @@ p {
   background: rgba(228, 245, 229, 0.2);
   transform: scale(1.1);
 }
+
+@media (max-width: 768px) {
+  .video-container {
+    display: none;
+  }
+
+  .mobile-background {
+    display: block;
+    width: 100%;
+    height: 100vh;
+    background-image: url('/fond.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-background {
+    display: none;
+    /* Cache l'image sur desktop */
+  }
+}
