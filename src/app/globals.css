@@ -13,10 +13,8 @@
 }
 
 @font-face {
-  font-family: 'Area_Normal_Bold';
-  src: url('/fonts/Area_Normal_Bold.otf') format('opentype');
-  font-weight: bold;
-  font-style: normal;
+  font-family: 'Bold';
+  src: url('/fonts/fonnts.com-Area_Normal_Bold.otf') format('opentype');
 }
 
 :root {
@@ -86,4 +84,82 @@ html {
 .feature-title {
   font-family: 'Area_Normal_Bold', sans-serif;
   letter-spacing: -0.02em;
+}
+
+.text-justify {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+p {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    visibility: hidden;
+    display: none;
+  }
+}
+
+@keyframes logoReveal {
+  0% {
+    clip-path: polygon(0 50%, 100% 50%, 100% 50%, 0 50%);
+  }
+
+  100% {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+.loader-container {
+  animation: fadeOut 0.5s ease-out forwards;
+  animation-delay: 2.5s;
+}
+
+.logo-reveal {
+  animation: logoReveal 1.5s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+/* Styles pour les contrôles vidéo personnalisés */
+.custom-video-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.video-container:hover .custom-video-controls {
+  opacity: 1;
+}
+
+.video-button {
+  background: rgba(228, 245, 229, 0.1);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(228, 245, 229, 0.2);
+  color: #E4F5E5;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.video-button:hover {
+  background: rgba(228, 245, 229, 0.2);
+  transform: scale(1.1);
 }
