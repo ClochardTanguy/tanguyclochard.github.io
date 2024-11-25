@@ -3,8 +3,6 @@ import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { FaGithub, FaLinkedin, FaEnvelope, FaChevronDown, FaArrowLeft, FaExpand, FaTimes, FaPlay, FaPause, FaCompress } from "react-icons/fa";
-import { Link as ScrollLink, animateScroll as scroll } from 'react-scroll';
-import LocomotiveScroll from 'locomotive-scroll';
 
 type Project = {
   id: number;
@@ -35,10 +33,8 @@ export default function Home() {
   const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
   const [showDetails, setShowDetails] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
-  const [locomotiveScroll, setLocomotiveScroll] = useState<any>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [showArrow, setShowArrow] = useState(true);
 
@@ -53,7 +49,6 @@ export default function Home() {
           lerp: 0.05,
           reloadOnContextChange: true
         });
-        setLocomotiveScroll(scroll);
 
         // Lecture de la vidéo après l'initialisation du scroll
         const videoElement = document.querySelector('video');
@@ -245,7 +240,6 @@ export default function Home() {
             preload="auto"
             className="fixed top-0 left-0 w-full h-full object-cover z-[-1]"
             onLoadedData={() => {
-              setVideoLoaded(true);
               if (videoRef.current) {
                 videoRef.current.play().catch(error => {
                   console.log("Erreur de lecture vidéo:", error);
@@ -390,7 +384,7 @@ export default function Home() {
                 transition={{ duration: 1, delay: 2.5 }}
                 className="text-base md:text-xl font-['Area_Normal_ExtraBold'] text-[#E4F5E5] max-w-2xl mx-auto text-center px-4"
               >
-                Concepteur développeur d'applications
+                Concepteur développeur d&apos;applications
               </motion.p>
               <div
                 onClick={handleScrollToProjects}
@@ -456,7 +450,7 @@ export default function Home() {
                 className="max-w-7xl mx-auto"
               >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-                  {projects.map((project, index) => (
+                  {projects.map((project) => (
                     <motion.div
                       key={project.id}
                       layoutId={`project-${project.id}`}
